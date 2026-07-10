@@ -72,8 +72,10 @@ claude mcp add --transport http travel-booking http://localhost:8001/mcp
 For Kubernetes ingress, replace the URL with your public host:
 
 ```bash
-claude mcp add --transport http travel-booking https://travel-mcp.example.com/mcp
+claude mcp add --transport http travel-booking https://<your-https-host>/mcp
 ```
+
+The server is configured for reverse proxies/tunnels by setting FastMCP `host="0.0.0.0"`. Without that, FastMCP's localhost DNS rebinding protection can reject public tunnel hostnames with `Invalid Host header`.
 
 ## Docker Build
 

@@ -59,11 +59,13 @@ LANGGRAPH_POSTGRES_URI
 
 `k8s/02-secret.yaml` is ignored by git.
 
-3. Update the ingress hostname in:
+3. If you have a real DNS name, add a `host` field and TLS settings in:
 
 ```bash
 k8s/05-ingress.yaml
 ```
+
+By default the ingress is hostless so temporary HTTPS tunnels, generated hostnames, and direct load balancer tests can route to `/mcp`.
 
 4. For first deployment only, enable table setup in `01-configmap.yaml`:
 
@@ -132,13 +134,13 @@ kubectl get ingress -n travel-mcp
 Connect Claude or another MCP client to:
 
 ```text
-https://<your-ingress-host>/mcp
+https://<your-https-host>/mcp
 ```
 
 Claude Code example:
 
 ```bash
-claude mcp add --transport http travel-booking https://<your-ingress-host>/mcp
+claude mcp add --transport http travel-booking https://<your-https-host>/mcp
 ```
 
 View logs:

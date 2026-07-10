@@ -23,6 +23,7 @@ mcp = FastMCP(
         "create_travel_booking. For guided user choice, start with start_travel_plan, "
         "then select a flight, select or skip hotel, and confirm the booking."
     ),
+    host="0.0.0.0",
     stateless_http=True,
     json_response=True,
 )
@@ -217,7 +218,7 @@ async def health(_: Any) -> JSONResponse:
     return JSONResponse({"status": "healthy", "service": "travel-mcp-server"})
 
 
-mcp.settings.streamable_http_path = "/"
+mcp.settings.streamable_http_path = "/mcp"
 
 
 @contextlib.asynccontextmanager
@@ -229,7 +230,7 @@ async def lifespan(_: Starlette):
 app = Starlette(
     routes=[
         Route("/health", health, methods=["GET"]),
-        Mount("/mcp", app=mcp.streamable_http_app()),
+        Mount("/", app=mcp.streamable_http_app()),
     ],
     lifespan=lifespan,
 )
